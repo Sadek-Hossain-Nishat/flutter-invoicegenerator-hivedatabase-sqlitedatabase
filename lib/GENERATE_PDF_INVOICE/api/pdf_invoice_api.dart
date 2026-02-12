@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 
 import 'package:flutterapp_zorinos/GENERATE_PDF_INVOICE/api/pdf_api.dart';
@@ -8,6 +9,7 @@ import 'package:flutterapp_zorinos/GENERATE_PDF_INVOICE/model/supplier.dart';
 import 'package:flutterapp_zorinos/GENERATE_PDF_INVOICE/utils.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 
 
@@ -126,7 +128,7 @@ class PdfInvoiceApi {
         .reduce((item1,item2)=>item1+item2);
     final vatPercent = invoice.items.first.vat;
     final vat = netTotal*vatPercent;
-    final total = netTotal*vat;
+    final total = netTotal+vat;
     return Container(
       alignment:  Alignment.centerRight,
       child: Row(
@@ -153,7 +155,38 @@ class PdfInvoiceApi {
       )
     );
   }
-  static buildFooter(Invoice invoice) {}
+  static buildFooter(Invoice invoice) {
+
+
+    return Column(
+
+
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Divider(),
+        SizedBox(height: 2*PdfPageFormat.mm),
+        buildSimpleText(title:'Address',value: invoice.supplier.address),
+        SizedBox(height: 1*PdfPageFormat.mm),
+        buildSimpleText(title: 'Paypal', value: invoice.supplier.paymentInfo)
+      ]
+    );
+  }
+
+
+  static buildSimpleText({required String title, required String value}){
+
+    final style = TextStyle(fontWeight: FontWeight.bold);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: pw.CrossAxisAlignment.end,
+      children: [
+        Text(title,style: style),
+        SizedBox(width: 2*PdfPageFormat.mm),
+        Text(value)
+      ]
+    );
+
+}
 
   static Widget buildCustomerAddress(Customer customer)
 
