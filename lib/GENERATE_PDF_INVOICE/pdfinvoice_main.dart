@@ -1,42 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutterapp_zorinos/GENERATE_PDF_INVOICE/page/pdf_page.dart';
 
-void main(){
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
+
   runApp(InvoiceGeneratorApp());
 }
 
 class InvoiceGeneratorApp extends StatelessWidget {
   const InvoiceGeneratorApp({super.key});
 
+
+  static final String title = "Invoice";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: title,
 
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepOrange,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.deepOrange,
           foregroundColor: Colors.white,
         )
       ),
 
-      home: InvoiceGeneratorHomePage(),
+      home: PdfPage()
+      // InvoiceGeneratorHomePage(),
     );
   }
 }
 
-class InvoiceGeneratorHomePage extends StatefulWidget {
+class InvoiceGeneratorHomePage extends StatelessWidget {
   const InvoiceGeneratorHomePage({super.key});
 
-  @override
-  State<InvoiceGeneratorHomePage> createState() => _InvoiceGeneratorHomePageState();
-}
-
-class _InvoiceGeneratorHomePageState extends State<InvoiceGeneratorHomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       appBar: AppBar(title: Text("Invoice Generator App"),
+
+
       centerTitle: true,),
     ));
   }
